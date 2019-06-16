@@ -1,22 +1,30 @@
 <template>
 	<view>
-		<view class="top-part">
+		<view id="top-part" class="top-part">
 			<view class="list" v-for="item in items" :key="item.key">
-				填充上半部分
+				填充第一部分
 			</view>
 		</view>
-		<view class="line-wapper" :class="{fix:isFix}" :style="'top:'+barHeight+'px'">
-			<view class="suspension-line" id="suspension-line">
+		<skychenSuspension :disHeight="dis1" preClass="top-part" ref="suspension_0">
 			<view class="part">品质联盟</view>
 			<view class="part">满减优惠</view>
 			<view class="part">配送费优惠</view>
 			<view class="part">新店</view>
-		</view>
-		</view>
-		
-		<view class="top-part">
+		</skychenSuspension>
+		<view class="bottom-part">
 			<view class="list" v-for="item in items" :key="item.key">
-				填充下半部分
+				填充第二部分
+			</view>
+		</view>
+		<skychenSuspension :disHeight="dis2" preClass="bottom-part" ref="suspension_1">
+			<view class="part">品质联盟</view>
+			<view class="part">满减优惠</view>
+			<view class="part">配送费优惠</view>
+			<view class="part">新店</view>
+		</skychenSuspension>
+		<view class="bottom-part2">
+			<view class="list" v-for="item in items" :key="item.key">
+				填充第三半部分
 			</view>
 		</view>
 	</view>
@@ -24,32 +32,34 @@
 
 <script>
 	var selectorQuery = null;
+	import skychenSuspension from '../../components/skychen-suspension.vue'
 	export default {
+		components: {
+			skychenSuspension
+		},
 		data() {
 			return {
-				barHeight:0,
-				isFix:false,
-				items:[]
+				items: [],
+				dis1:0,
+				dis2:39
 			}
 		},
 		onLoad() {
-			this.barHeight = uni.getSystemInfoSync().windowTop || uni.getSystemInfoSync().statusBarHeight;
+			
 			for (var i = 0; i < 50; i++) {
-				var item = {key:i,value:i};
+				var item = {
+					key: i,
+					value: i
+				};
 				this.items.push(item);
 			}
 		},
 		onReady() {
-			selectorQuery = uni.createSelectorQuery();
+			// selectorQuery = uni.createSelectorQuery();
 		},
 		onPageScroll() {
-			selectorQuery.select('.top-part').boundingClientRect((nodeInfo) => {
-				if(nodeInfo.bottom-this.barHeight <= 0){
-					this.isFix = true;
-				}else{
-					this.isFix = false;
-				}
-			}).exec();
+			this.$refs.suspension_0.pageScroll();
+			this.$refs.suspension_1.pageScroll();
 		},
 		methods: {
 		}
@@ -57,21 +67,8 @@
 </script>
 
 <style>
-.fix{
-	position: fixed;
-	top: 0upx;
-}
-.line-wapper{
-	width: 100%;
-}
-.suspension-line{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	margin: 0upx 20upx;
-}
-.part{
-	background-color: #d4cfcf;
-	padding: 10upx;
-}
+	.part {
+		background-color: #d4cfcf;
+		padding: 10upx;
+	}
 </style>
