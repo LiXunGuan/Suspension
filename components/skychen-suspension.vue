@@ -20,7 +20,7 @@
 		data() {
 			return {
 				barHeight: 0,
-				isFix: false,
+				isFix: true,
 				index: 'suspension-'
 			};
 		},

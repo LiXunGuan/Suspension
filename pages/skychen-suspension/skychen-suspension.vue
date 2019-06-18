@@ -55,7 +55,7 @@
 			}
 		},
 		onReady() {
-			// selectorQuery = uni.createSelectorQuery();
+			selectorQuery = uni.createSelectorQuery();
 		},
 		onPageScroll() {
 			this.$refs.suspension_0.pageScroll();
